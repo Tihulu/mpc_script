@@ -29,8 +29,6 @@ def fill_connection_points(input_path, output_path, kernel_size=3):
     
     # Fill the contours
     cv2.drawContours(dilated, contours, -1, (255), thickness=cv2.FILLED)
-
-    # Save the result
     cv2.imwrite(output_path, 255 - dilated)  # We invert again to get the original color scheme
 
 
@@ -41,9 +39,7 @@ def remove_background(input_path, output_path, bg_color, tolerance=60):
     # Open the image
     img = Image.open(input_path)
     img = img.convert("RGBA")
-    
     datas = img.getdata()
-
     new_data = []
     for item in datas:
         # Change all white (also shades that are close to white)
@@ -56,8 +52,7 @@ def remove_background(input_path, output_path, bg_color, tolerance=60):
     img.putdata(new_data)
     img.save(output_path, "PNG")
 
-# You'll need to define the RGB value of your background color.
-# For your image, it seems to be a shade of teal.
+# Need to define the RGB value of your background color.
 bg_color = (0, 170, 170)  # You might need to adjust this based on the exact color you want to remove
 
 
@@ -71,8 +66,6 @@ def crop(path_to_your_image, path_to_save_cropped_image,a):
     # For example: (100, 100, 300, 300) will crop a 200x200 pixel rectangle from the original image,
     # starting at (100, 100) and ending at (300, 300) cropped_img = img.crop((100, 100, 300, 300))
     cropped_img = img.crop(a)
-    
-    # Save the cropped image
     cropped_img.save(path_to_save_cropped_image)
 
 
@@ -101,9 +94,6 @@ def image_to_dxf_planes(image_path, output_path):
     # Save the DXF document
     doc.saveas(output_path)
 
-# Call the function
-#image_to_dxf_planes("path_to_your_input_image.png", "path_to_your_output.dxf")
-
 
 def png_to_dxf(png_path, dxf_path, threshold=128):
     # Open and convert the image to grayscale
@@ -120,7 +110,7 @@ def png_to_dxf(png_path, dxf_path, threshold=128):
     edges = binary.filter(ImageFilter.FIND_EDGES)
     width, height = edges.size
 
-    # Simple loop to find and draw edges, can be optimized
+    # Loop to find and draw edges, can be optimized
     for y in range(height):
         for x in range(width):
             if edges.getpixel((x, y)) > threshold:
@@ -128,7 +118,6 @@ def png_to_dxf(png_path, dxf_path, threshold=128):
                 # This is a naive way, a more efficient way would be to trace a line path.
                 msp.add_point((x, -y))  # Note: Inverting y for proper DXF orientation
 
-    # Save the DXF document
     doc.saveas(dxf_path)
 
 
@@ -175,16 +164,6 @@ def image_to_dxf_plane(image_path, output_path):
 
     # Save the DXF document
     doc.saveas(output_path)
-
-# Provide your image path and desired output path
-#image_path = 'path_to_your_image.png'
-#output_path = 'output.dxf'
-#image_to_dxf_plane(image_path, output_path)
-
-
-
-# Call the function
-#image_to_dxf_rectangles("path_to_your_input_image.png", "path_to_your_output.dxf")
 
 
 
